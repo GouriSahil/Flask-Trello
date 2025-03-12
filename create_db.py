@@ -7,5 +7,5 @@ bcrypt = Bcrypt(app)
 
 with app.app_context():
     db.create_all()
-    User.query.all()
-    
+    user = User.query.all()
+    print(user)

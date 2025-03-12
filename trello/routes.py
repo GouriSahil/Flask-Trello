@@ -20,7 +20,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
@@ -30,17 +29,16 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash("You haved been logged in !", 'success')
+            flash("Login success","success")
             return redirect(url_for('home'))
     return render_template('login.html',form=form)
 
 
-@app.route('/', method=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def home():
     return render_template('home.html')
 
 @app.route('/logout')
-@login_required
 @login_required
 def logout():
     logout_user()

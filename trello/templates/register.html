@@ -12,21 +12,46 @@
     <div class="col-md-6">
         <div class="card shadow-lg p-4">
             <h3 class="text-center mb-4">Register</h3>
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Username</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <div class="d-flex flex-column form-group">
+            <form method="POST"> 
+                {{ form.hidden_tag() }}
+                <div class="form-group ">
+                   {{form.username.label}}
+                   {{form.username}}
+                    {% for error in form.username.errors %}
+                     <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                   {{form.email.label}}
+                   {{form.email}}
+                   {% for error in form.email.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Confirm Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password">
+                    {{form.password.label}}
+                    {{form.password}}
+                    {% for error in form.password.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                <div class="form-group">
+                    {{form.confirm_password.label}}
+                    {{form.confirm_password}}
+                    {% for error in form.confirm_password.errors %}
+                        <span style="color: red;">{{ error }}</span><br>
+                    {% endfor %}
+                </div>
+                {{ form.submit(class="btn btn-primary btn-block mt-3") }}
+                
             </form>
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already have an account? <a class="ml-2 text-decoration-none " href="{{ url_for('login') }}">Log In</a>
+            </small>
+        </div>
         </div>
     </div>
 </div>
