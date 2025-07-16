@@ -1,15 +1,14 @@
-from flask import Flask,render_template, url_for , redirect , flash
+from flask import render_template, url_for, redirect, flash
 from flask_login import current_user, login_user, login_required, logout_user
-from . import app, bcrypt , db
-from .auth import RegestrationForm , LoginForm
+from . import app, bcrypt, db
+from .auth import RegestrationForm, LoginForm
 from .models import User
 
 
-@app.route('/register', methods=['POST','GET'])
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    
     form = RegestrationForm()
     if form.validate_on_submit():
         hashed_pass = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -29,9 +28,9 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash("Login success","success")
+            flash("Login success", "success")
             return redirect(url_for('home'))
-    return render_template('login.html',form=form)
+    return render_template('login.html', form=form)
 
 
 @app.route('/', methods=['POST', 'GET'])
