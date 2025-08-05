@@ -9,6 +9,7 @@ CardUser = db.Table(
     db.Column('card_id', db.Integer, db.ForeignKey('card.id', name='fk_card_user_card_id'), primary_key=True)
 )
 
+#Many to many relatioship between user and baord (for user role)
 class BoardMember(db.Model):
     __tablename__ = 'user_board'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', name='fk_user_board_user_id'), primary_key=True)
@@ -16,7 +17,8 @@ class BoardMember(db.Model):
     role = db.Column(db.String(20))  # 'admin' or 'member'
     user = db.relationship('User', back_populates='user_boards')
     board = db.relationship('Board', back_populates='user_boards')
-    
+
+#User table
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +33,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"{self.username}, {self.email}"
 
+#Board Table
 class Board(db.Model):
     __tablename__ = 'board'
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +42,7 @@ class Board(db.Model):
     user_boards = db.relationship('BoardMember', back_populates='board')
     assignees = db.relationship('User', secondary='user_board', back_populates='boards', viewonly=True)
 
+#List Table
 class List(db.Model):
     __tablename__ = 'list'
     id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +51,7 @@ class List(db.Model):
     board_id = db.Column(db.Integer, db.ForeignKey('board.id', name='fk_list_board_id'), nullable=False)
     cards = db.relationship('Card', backref='list', lazy=True)
 
+#card table
 class Card(db.Model):
     __tablename__ = 'card'
     id = db.Column(db.Integer, primary_key=True)
@@ -59,6 +64,7 @@ class Card(db.Model):
     card_activities = db.relationship('CardActivity', back_populates='card', lazy=True)
     assignees = db.relationship('User', secondary=CardUser, back_populates='assigned_cards')
 
+#cardActivity table
 class CardActivity(db.Model):
     __tablename__ = 'cardactivity'
     id = db.Column(db.Integer, primary_key=True)
@@ -70,6 +76,7 @@ class CardActivity(db.Model):
     card = db.relationship('Card', back_populates='card_activities')
     user = db.relationship('User')
 
+#CheckList table
 class CheckList(db.Model):
     __tablename__ = 'checklist'
     id = db.Column(db.Integer, primary_key=True)
@@ -78,6 +85,7 @@ class CheckList(db.Model):
     card_id = db.Column(db.Integer, db.ForeignKey('card.id', name='fk_card_id'), nullable=False)
     card = db.relationship('Card', backref='checklists')
 
+#CheckListItem table
 class CheckListItem(db.Model):
     __tablename__ = 'checklistitem'
     id = db.Column(db.Integer, primary_key=True)
@@ -86,7 +94,7 @@ class CheckListItem(db.Model):
     position = db.Column(db.Integer, default=0)
     checklist_id = db.Column(db.Integer, db.ForeignKey('checklist.id', name='fk_checklist_id'), nullable=False)
 
-
+#Attachement table
 class Attachment(db.Model):
     __tablename__ = 'attachment'
     id = db.Column(db.Integer, primary_key=True)

@@ -1,5 +1,6 @@
 from . import api , app
 from trello.auth_resource import UserLogin,Userregistration , ProtectedResource
+from trello.board_resource import CreateBoard , GetBoard
 from flask import render_template
 
 
@@ -20,6 +21,8 @@ def register():
 api.add_resource(Userregistration, '/register')
 api.add_resource(UserLogin, '/login')
 api.add_resource(ProtectedResource, '/secure')
+api.add_resource(GetBoard , '/boards') #handle get
+api.add_resource(CreateBoard, '/boards') #handle post
 
 
 
